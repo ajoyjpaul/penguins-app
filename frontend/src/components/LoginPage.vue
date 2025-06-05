@@ -110,7 +110,7 @@ html, body {
 
 .login-input:focus {
   background-color: #2a2a2a !important;
-  border-color: #ffd700 !important;
+  border-color: #FFB81C !important;
   box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25) !important;
   color: #ffffff !important;
   outline: none;
@@ -121,7 +121,7 @@ html, body {
 }
 
 .btn-gold {
-  background-color: #ffd700;
+  background-color: #FFB81C;
   border: none;
   color: #000000;
   font-weight: 600;
@@ -138,7 +138,7 @@ html, body {
 }
 
 .btn-gold:focus {
-  background-color: #ffd700;
+  background-color: #FFB81C;
   color: #000000;
   box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.5);
 }
