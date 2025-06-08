@@ -8,10 +8,14 @@
             <div class="header-section mb-5">
               <div class="d-flex align-items-center">
                 <img src="/penguins.svg" alt="Pittsburgh Penguins" class="penguins-logo me-3">
-                <h1 class="roster-title mb-0">Roster</h1>
+                <h1 class="roster-title">Penguins AI</h1>
               </div>
             </div>
             
+            <div class="mb-4">
+              <h2 class="roster-subtitle">Roster 2024-25</h2>
+            </div>
+
             <!-- Forwards Section -->
             <div class="mb-5">
               <h2 class="section-title mb-3">Forwards</h2>
@@ -148,6 +152,14 @@ const openAI = () => {
   color: white;
   font-weight: bold;
   font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+.roster-subtitle {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   margin: 0;
 }
