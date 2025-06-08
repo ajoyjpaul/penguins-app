@@ -28,7 +28,7 @@
               </div>
             </div>
           </td>
-          <td class="pos-col">{{ player.positionCode }}</td>
+          <td class="pos-col">{{ player.positionCode === 'R' ? 'RW' : player.positionCode === 'L' ? 'LW' : player.positionCode }}</td>
           <td class="stat-col">{{ player.gamesPlayed }}</td>
           <td class="stat-col">{{ player.goals }}</td>
           <td class="stat-col">{{ player.assists }}</td>
