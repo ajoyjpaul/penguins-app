@@ -6,37 +6,35 @@
           <th class="player-col">Player</th>
           <th class="pos-col">Pos</th>
           <th class="stat-col">GP</th>
-          <th class="stat-col">G</th>
-          <th class="stat-col">A</th>
-          <th class="stat-col">Pts</th>
-          <th class="stat-col">+/-</th>
-          <th class="stat-col">TOI</th>
+          <th class="stat-col">W</th>
+          <th class="stat-col">L</th>
+          <th class="stat-col">OTL</th>
+          <th class="stat-col">GAA</th>
+          <th class="stat-col">SV%</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="player in players" :key="player.playerId" class="table-row">
+        <tr v-for="goalie in goalies" :key="goalie.playerId" class="table-row">
           <td class="player-col">
             <div class="player-info">
               <img 
-                :src="player.headshot" 
-                :alt="player.firstName.default + ' ' + player.lastName.default"
+                :src="goalie.headshot" 
+                :alt="goalie.firstName.default + ' ' + goalie.lastName.default"
                 class="player-headshot"
                 @error="handleImageError"
               >
               <div class="player-details">
-                <div class="player-name">{{ player.firstName.default }} {{ player.lastName.default }}</div>
+                <div class="player-name">{{ goalie.firstName.default }} {{ goalie.lastName.default }}</div>
               </div>
             </div>
           </td>
-          <td class="pos-col">{{ player.positionCode }}</td>
-          <td class="stat-col">{{ player.gamesPlayed }}</td>
-          <td class="stat-col">{{ player.goals }}</td>
-          <td class="stat-col">{{ player.assists }}</td>
-          <td class="stat-col points-column">{{ player.points }}</td>
-          <td class="stat-col" :class="getPlusMinusClass(player.plusMinus)">
-            {{ formatPlusMinus(player.plusMinus) }}
-          </td>
-          <td class="stat-col">{{ formatTOI(player.avgTimeOnIcePerGame) }}</td>
+          <td class="pos-col">G</td>
+          <td class="stat-col">{{ goalie.gamesPlayed }}</td>
+          <td class="stat-col">{{ goalie.wins }}</td>
+          <td class="stat-col">{{ goalie.losses }}</td>
+          <td class="stat-col">{{ goalie.overtimeLosses }}</td>
+          <td class="stat-col">{{ goalie.goalsAgainstAverage.toFixed(2) }}</td>
+          <td class="stat-col">{{ goalie.savePercentage.toFixed(3) }}</td>
         </tr>
       </tbody>
     </table>
@@ -44,42 +42,24 @@
 </template>
 
 <script setup lang="ts">
-interface Player {
+interface Goalie {
   playerId: number
   headshot: string
   firstName: { default: string }
   lastName: { default: string }
-  positionCode: string
   gamesPlayed: number
-  goals: number
-  assists: number
-  points: number
-  plusMinus: number
-  avgTimeOnIcePerGame: number
+  wins: number
+  losses: number
+  overtimeLosses: number
+  goalsAgainstAverage: number
+  savePercentage: number
 }
 
 interface Props {
-  players: Player[]
+  goalies: Goalie[]
 }
 
 defineProps<Props>()
-
-// Helper functions
-const formatTOI = (avgTimeOnIcePerGame: number): string => {
-  const minutes = Math.floor(avgTimeOnIcePerGame / 60)
-  const seconds = Math.round(avgTimeOnIcePerGame % 60)
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
-}
-
-const formatPlusMinus = (plusMinus: number): string => {
-  if (plusMinus === 0) return '0'
-  return plusMinus > 0 ? `+${plusMinus}` : `${plusMinus}`
-}
-
-const getPlusMinusClass = (plusMinus: number): string => {
-  if (plusMinus === 0) return 'plus-minus-neutral'
-  return plusMinus > 0 ? 'plus-minus-positive' : 'plus-minus-negative'
-}
 
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
@@ -194,25 +174,6 @@ const handleImageError = (event: Event) => {
   font-weight: 600;
   color: white;
   font-size: 1rem;
-}
-
-.points-column {
-  font-weight: 700 !important;
-  color: white !important;
-}
-
-.plus-minus-positive {
-  color: #28a745 !important;
-  font-weight: 600;
-}
-
-.plus-minus-negative {
-  color: #dc3545 !important;
-  font-weight: 600;
-}
-
-.plus-minus-neutral {
-  color: #6c757d !important;
 }
 
 /* Responsive adjustments */

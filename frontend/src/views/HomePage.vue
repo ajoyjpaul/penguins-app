@@ -1,76 +1,56 @@
 <template>
-  <div class="overflow-auto">
+  <div class="page-wrapper overflow-auto">
     <div class="container-fluid py-4">
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-12">
-          <h1 class="text-center mb-4">Roster</h1>
-          
-          <!-- Forwards Section -->
-          <div class="mb-5">
-            <h2 class="mb-3">Forwards</h2>
-            <PlayerTable :players="forwards" />
-          </div>
+          <div class="content-container">
+            <!-- Header with Logo and Title -->
+            <div class="header-section mb-5">
+              <div class="d-flex align-items-center">
+                <img src="/penguins.svg" alt="Pittsburgh Penguins" class="penguins-logo me-3">
+                <h1 class="roster-title mb-0">Roster</h1>
+              </div>
+            </div>
+            
+            <!-- Forwards Section -->
+            <div class="mb-5">
+              <h2 class="section-title mb-3">Forwards</h2>
+              <div class="table-wrapper">
+                <PlayerTable :players="forwards" />
+              </div>
+            </div>
 
-          <!-- Defensemen Section -->
-          <div class="mb-5">
-            <h2 class="mb-3">Defensemen</h2>
-            <PlayerTable :players="defensemen" />
-          </div>
+            <!-- Defensemen Section -->
+            <div class="mb-5">
+              <h2 class="section-title mb-3">Defensemen</h2>
+              <div class="table-wrapper">
+                <PlayerTable :players="defensemen" />
+              </div>
+            </div>
 
-          <!-- Goalies Section -->
-          <div class="mb-5">
-            <h2 class="mb-3">Goalies</h2>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead class="table-dark">
-                  <tr>
-                    <th>Player</th>
-                    <th>Pos</th>
-                    <th>GP</th>
-                    <th>W</th>
-                    <th>L</th>
-                    <th>OTL</th>
-                    <th>GAA</th>
-                    <th>SV%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="goalie in goalies" :key="goalie.playerId" class="align-middle">
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <img 
-                          :src="goalie.headshot" 
-                          :alt="goalie.firstName.default + ' ' + goalie.lastName.default"
-                          class="rounded-circle me-3"
-                          style="width: 50px; height: 50px; object-fit: cover;"
-                          @error="handleImageError"
-                        >
-                        <div>
-                          <div class="fw-bold">{{ goalie.firstName.default }} {{ goalie.lastName.default }}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>G</td>
-                    <td>{{ goalie.gamesPlayed }}</td>
-                    <td>{{ goalie.wins }}</td>
-                    <td>{{ goalie.losses }}</td>
-                    <td>{{ goalie.overtimeLosses }}</td>
-                    <td>{{ goalie.goalsAgainstAverage.toFixed(2) }}</td>
-                    <td>{{ goalie.savePercentage.toFixed(3) }}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- Goalies Section -->
+            <div class="mb-5">
+              <h2 class="section-title mb-3">Goalies</h2>
+              <div class="table-wrapper">
+                <GoalieTable :goalies="goalies" />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Floating Ask Penguins AI Button -->
+    <button class="floating-ai-button" @click="openAI">
+      Ask Penguins AI
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import PlayerTable from '../components/PlayerTable.vue'
+import GoalieTable from '../components/GoalieTable.vue'
 
 // Import the roster data
 import rosterData from '../../../shared/data/2024_2025_penguins_roster.json'
@@ -127,47 +107,109 @@ const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
   img.src = '/penguins-logo.png'
 }
+
+const openAI = () => {
+  // Placeholder for AI functionality
+  alert('Ask Penguins AI functionality coming soon!')
+}
 </script>
 
 <style scoped>
+.page-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: white;
+  position: relative;
+}
+
 .container-fluid {
-  background-color: #f8f9fa;
+  background: transparent;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-h1 {
-  color: #000;
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-section {
+  text-align: left;
+  padding: 2rem 0;
+}
+
+.penguins-logo {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 4px 8px rgba(252, 181, 20, 0.3));
+}
+
+.roster-title {
+  color: white;
   font-weight: bold;
-  margin-bottom: 2rem;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
 }
 
-h2 {
-  color: #000;
+.section-title {
+  color: white;
   font-weight: 600;
+  font-size: 2rem;
   border-bottom: 3px solid #fcb514;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
+  display: inline-block;
 }
 
-.table {
-  background-color: white;
+.floating-ai-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #fcb514 0%, #f39c12 100%);
+  color: #000;
+  border: none;
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 15px 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 20px rgba(252, 181, 20, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1000;
 }
 
-.table-dark {
-  background-color: #000 !important;
+.floating-ai-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(252, 181, 20, 0.6);
+  background: linear-gradient(135deg, #f39c12 0%, #fcb514 100%);
 }
 
-.table-striped > tbody > tr:nth-of-type(odd) > td {
-  background-color: rgba(0,0,0,0.05);
+.floating-ai-button:active {
+  transform: translateY(0);
 }
 
-.fw-bold {
-  font-weight: 600 !important;
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
-img {
-  border: 2px solid #fcb514;
+@media (max-width: 768px) {
+  .roster-title {
+    font-size: 2.5rem;
+  }
+  
+  .penguins-logo {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .floating-ai-button {
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
 }
 </style>
