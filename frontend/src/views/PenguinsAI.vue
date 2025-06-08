@@ -1,5 +1,5 @@
 <template>
-  <div class="penguins-ai-page">
+  <div class="penguins-ai-page overflow-auto">
     <!-- Back Button -->
     <button class="back-button" @click="goBack">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
