@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import LoginPage from "../components/LoginPage.vue";
-import HomePage from "../components/HomePage.vue";
+import LoginPage from "../views/LoginPage.vue";
+import HomePage from "../views/HomePage.vue";
 
 const routes: RouteRecordRaw[] = [
   { path: "/login", name: "Login", component: LoginPage },
