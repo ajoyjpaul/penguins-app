@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import LoginPage from "../views/LoginPage.vue";
 import HomePage from "../views/HomePage.vue";
+import PenguinsAI from "../views/PenguinsAI.vue";
 
 const routes: RouteRecordRaw[] = [
   { path: "/login", name: "Login", component: LoginPage },
   { path: "/home", name: "Home", component: HomePage },
+  { path: "/ai", name: "PenguinsAI", component: PenguinsAI },
 ];
 
 const router = createRouter({

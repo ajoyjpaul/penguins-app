@@ -52,12 +52,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import PlayerTable from '../components/PlayerTable.vue'
 import GoalieTable from '../components/GoalieTable.vue'
 
 // Import the roster data
 import rosterData from '../../../shared/data/2024_2025_penguins_roster.json'
+
+// Router instance
+const router = useRouter()
 
 // Define interfaces for type safety
 interface Player {
@@ -113,8 +117,7 @@ const handleImageError = (event: Event) => {
 }
 
 const openAI = () => {
-  // Placeholder for AI functionality
-  alert('Ask Penguins AI functionality coming soon!')
+  router.push('/AI')
 }
 </script>
 
