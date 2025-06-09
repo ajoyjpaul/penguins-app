@@ -16,6 +16,7 @@
             class="form-control login-input"
             placeholder="Email"
             required
+            :disabled="isLoading"
           />
         </div>
 
@@ -26,10 +27,18 @@
             class="form-control login-input"
             placeholder="Password"
             required
+            :disabled="isLoading"
           />
         </div>
 
-        <button type="submit" class="btn btn-gold w-100 mb-3">Sign in</button>
+        <div v-if="error" class="alert alert-danger mb-3" role="alert">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="btn btn-gold w-100 mb-3" :disabled="isLoading">
+          <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ isLoading ? 'Signing in...' : 'Sign in' }}
+        </button>
         
       </form>
     </div>
@@ -38,12 +47,38 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { authService } from '../services/authService';
 
+const router = useRouter();
 const email = ref('');
 const password = ref('');
+const error = ref('');
+const isLoading = ref(false);
 
-function login() {
-  console.log('Login attempt:', { email: email.value, password: password.value });
+async function login() {
+  if (!email.value || !password.value) {
+    error.value = 'Please enter both email and password';
+    return;
+  }
+
+  error.value = '';
+  isLoading.value = true;
+
+  try {
+    const result = await authService.signIn(email.value, password.value);
+    
+    if (result.success) {
+      // Redirect to home page on successful login
+      router.push('/home');
+    } else {
+      error.value = result.error || 'Username/password error';
+    }
+  } catch (err) {
+    error.value = 'Username/password error';
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
 
@@ -141,6 +176,29 @@ html, body {
   background-color: #FFB81C;
   color: #000000;
   box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.5);
+}
+
+.btn-gold:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.alert-danger {
+  background-color: #dc3545;
+  border: 1px solid #dc3545;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.login-input:disabled {
+  background-color: #1a1a1a !important;
+  border-color: #2a2a2a !important;
+  color: #666666 !important;
+  cursor: not-allowed;
 }
 
 @media (max-width: 576px) {
