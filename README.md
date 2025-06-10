@@ -2,6 +2,8 @@
 
 A fun interactive web application that provides AI-powered insights about the Pittsburgh Penguins hockey team using real 2024-25 season roster data.
 
+### Video Demo
+
 ## ⚠️ Disclaimer
 
 **This project is not affiliated with the Pittsburgh Penguins organization in any way.** This is an independent, educational project created for entertainment and learning purposes only.
@@ -19,7 +21,6 @@ This is a **fun project** that combines:
 
 The app allows users to ask natural language questions about the Pittsburgh Penguins' 2024-25 roster and get detailed, data-driven responses using Meta's LLaMA 3.3-8B model.
 
-### Video Demo
 
 ### Tech Stack
 
