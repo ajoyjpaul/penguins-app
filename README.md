@@ -2,7 +2,8 @@
 
 A fun interactive web application that provides AI-powered insights about the Pittsburgh Penguins hockey team using real 2024-25 season roster data.
 
-### Video Demo
+### Video Demo (YouTube)
+https://www.youtube.com/watch?v=Y0qUKT8oRPY
 
 ## ⚠️ Disclaimer
 
