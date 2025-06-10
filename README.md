@@ -56,13 +56,6 @@ The app allows users to ask natural language questions about the Pittsburgh Peng
 - AI prompted to format responses with markdown
 - Supports hockey-specific queries about lineups, stats, comparisons
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- Firebase project setup
-- OpenRouter API key
 
 ## 📊 Features
 
