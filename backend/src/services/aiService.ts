@@ -54,7 +54,18 @@ This is the complete roster data with all statistics for every player and goalie
 
 ${rosterContext}
 
-Always use the provided current roster data when answering questions about players, stats, or team performance. Be specific with numbers and provide context when discussing player performance.`,
+Always use the provided current roster data when answering questions about players, stats, or team performance. Be specific with numbers and provide context when discussing player performance.
+
+Format your responses using markdown for better readability:
+- Use **bold** for player names and important statistics
+- Use headers (##) to organize information into sections
+- Use bullet points for lists of players or stats
+- Use tables when comparing multiple players
+- Use *italics* for emphasis and commentary
+- Add line breaks between different topics for better readability
+- Use proper spacing to make responses easy to scan
+- Any line combinations for forward lines should one of each position only: Left wing, Center, Right wing (Position code of L = Left Wing, R = Right Wing, C = Center, D = Defense, G = Goalie in the json file). No defensemen in forward lines, and no forwards in defense lines.
+`,
             },
             {
               role: "user",

@@ -58,7 +58,7 @@
                 </div>
                 <p class="response-text">{{ aiResponse }}</p>
               </div>
-              <p v-else class="response-text">{{ aiResponse }}</p>
+              <div v-else class="response-text markdown-content" v-html="parsedResponse"></div>
             </div>
           </div>
         </div>
@@ -68,8 +68,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { marked } from "marked";
 import QuestionBox from "../components/QuestionBox.vue";
 import { aiService } from "../services/aiService";
 
@@ -80,6 +81,20 @@ const router = useRouter();
 const showResponse = ref(false);
 const aiResponse = ref("");
 const isLoading = ref(false);
+
+// Configure marked options for better formatting
+marked.setOptions({
+  breaks: true, // Convert line breaks to <br>
+  gfm: true, // Enable GitHub Flavored Markdown
+  sanitize: false, // Allow HTML for better formatting
+  smartypants: true, // Use smart quotes and other typographic niceness
+});
+
+// Computed property to parse markdown
+const parsedResponse = computed(() => {
+  if (!aiResponse.value || isLoading.value) return "";
+  return marked(aiResponse.value);
+});
 
 // Methods
 const handleQuestionSubmit = async (question) => {
@@ -202,6 +217,124 @@ const goBack = () => {
   color: #ffffff;
   margin: 0;
   font-weight: 300;
+  text-align: left;
+}
+
+/* Markdown content styling */
+.markdown-content {
+  white-space: pre-wrap; /* Preserve whitespace and line breaks */
+  word-wrap: break-word; /* Break long words if necessary */
+}
+
+.markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+  color: #fcb514;
+  margin: 1.5rem 0 1rem 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.markdown-content h1 {
+  font-size: 2rem;
+  border-bottom: 2px solid #fcb514;
+  padding-bottom: 0.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.75rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.5rem;
+}
+
+.markdown-content h4 {
+  font-size: 1.25rem;
+}
+
+.markdown-content p {
+  margin: 1rem 0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.markdown-content br {
+  line-height: 1.8;
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.markdown-content li {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.markdown-content strong {
+  color: #fcb514;
+  font-weight: 600;
+}
+
+.markdown-content em {
+  color: #e5e7eb;
+  font-style: italic;
+}
+
+.markdown-content code {
+  background: rgba(252, 181, 20, 0.1);
+  color: #fcb514;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(252, 181, 20, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+  color: #ffffff;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #fcb514;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  font-style: italic;
+  color: #e5e7eb;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.markdown-content th, .markdown-content td {
+  border: 1px solid rgba(252, 181, 20, 0.3);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.markdown-content th {
+  background: rgba(252, 181, 20, 0.1);
+  color: #fcb514;
+  font-weight: 600;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid rgba(252, 181, 20, 0.3);
+  margin: 2rem 0;
 }
 
 .loading-container {
