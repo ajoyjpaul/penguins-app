@@ -7,14 +7,33 @@
         :placeholder="placeholder"
         v-model="question"
         @keyup.enter="handleSubmit"
+        :disabled="isLoading"
       />
-      <button 
+      <button
         class="btn search-btn position-absolute"
         @click="handleSubmit"
         type="button"
+        :disabled="isLoading"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+        <span
+          v-if="isLoading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        <svg
+          v-else
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="currentColor"
+          class="bi bi-arrow-right"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"
+          />
         </svg>
       </button>
     </div>
@@ -22,28 +41,32 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 // Props
 const props = defineProps({
   placeholder: {
     type: String,
-    default: ""
-  }
-})
+    default: "",
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 // Emits
-const emit = defineEmits(['submit'])
+const emit = defineEmits(["submit"]);
 
 // Reactive data
-const question = ref('')
+const question = ref("");
 
 // Methods
 const handleSubmit = () => {
   if (question.value.trim()) {
-    emit('submit', question.value.trim())
+    emit("submit", question.value.trim());
   }
-}
+};
 </script>
 
 <style scoped>
@@ -68,7 +91,7 @@ const handleSubmit = () => {
 
 .search-input:focus {
   background-color: #2a2a2a;
-  border-color: #FCB900;
+  border-color: #fcb900;
   box-shadow: 0 0 0 0.2rem rgba(252, 185, 0, 0.25);
   color: #ffffff;
 }
@@ -90,12 +113,27 @@ const handleSubmit = () => {
 }
 
 .search-btn:hover {
-  color: #FCB900;
+  color: #fcb900;
   background: rgba(252, 185, 0, 0.1);
 }
 
 .search-btn:focus {
   box-shadow: none;
-  color: #FCB900;
+  color: #fcb900;
 }
-</style> 
+
+.search-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.search-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.search-btn:disabled:hover {
+  color: #9ca3af;
+  background: transparent;
+}
+</style>
