@@ -3,6 +3,7 @@ import { http } from "@google-cloud/functions-framework";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes";
+import aiRoutes from "./routes/aiRoutes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.get("/api/health", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Export the app as a Google Cloud Function (temp)
 http("penguinsApi", app);

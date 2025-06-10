@@ -2,46 +2,65 @@
   <div class="penguins-ai-page overflow-auto">
     <!-- Back Button -->
     <button class="back-button" @click="goBack">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M19 12H5M12 19L5 12L12 5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
       Back to Home
     </button>
-    
+
     <div class="container-fluid h-100">
       <div class="row justify-content-center align-items-center min-vh-100">
         <div class="col-12 col-lg-10 col-xl-8">
-          
           <!-- Penguins Logo -->
           <div class="text-center mb-4">
-            <img 
-              src="/penguins.svg" 
-              alt="Pittsburgh Penguins" 
+            <img
+              src="/penguins.svg"
+              alt="Pittsburgh Penguins"
               class="penguins-logo"
             />
           </div>
-          
+
           <!-- Title -->
           <div class="text-center mb-5">
             <h1 class="page-title">Ask Penguins AI</h1>
           </div>
-          
+
           <!-- Question Box Component -->
-          <QuestionBox 
+          <QuestionBox
             @submit="handleQuestionSubmit"
-            :placeholder="''"
+            :placeholder="'Ask about the Pittsburgh Penguins...'"
+            :isLoading="isLoading"
           />
-          
+
           <!-- AI Response Section -->
           <div v-if="showResponse" class="ai-response-section text-center">
             <div class="response-header mb-3">
               <h6 class="response-label">PENGUINS AI RESPONSE</h6>
             </div>
             <div class="response-content">
-              <p class="response-text">{{ aiResponse }}</p>
+              <div v-if="isLoading" class="loading-container">
+                <div class="typing-animation">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <p class="response-text">{{ aiResponse }}</p>
+              </div>
+              <p v-else class="response-text">{{ aiResponse }}</p>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
@@ -49,27 +68,51 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import QuestionBox from '../components/QuestionBox.vue'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import QuestionBox from "../components/QuestionBox.vue";
+import { aiService } from "../services/aiService";
 
 // Router instance
-const router = useRouter()
+const router = useRouter();
 
 // Reactive data
-const showResponse = ref(true) 
-const aiResponse = ref("")
+const showResponse = ref(false);
+const aiResponse = ref("");
+const isLoading = ref(false);
 
 // Methods
-const handleQuestionSubmit = (question) => {
-  console.log('Question submitted:', question)
-  showResponse.value = true
-  aiResponse.value = ""
-}
+const handleQuestionSubmit = async (question) => {
+  console.log("Question submitted:", question);
+
+  // Set loading state
+  isLoading.value = true;
+  showResponse.value = true;
+  aiResponse.value = "Thinking...";
+
+  try {
+    // Call the AI service
+    const result = await aiService.askQuestion(question);
+
+    if (result.success && result.answer) {
+      aiResponse.value = result.answer;
+    } else {
+      aiResponse.value =
+        result.error ||
+        "Sorry, I couldn't process your question. Please try again.";
+    }
+  } catch (error) {
+    console.error("Error asking question:", error);
+    aiResponse.value = "Sorry, something went wrong. Please try again.";
+  } finally {
+    // Clear loading state
+    isLoading.value = false;
+  }
+};
 
 const goBack = () => {
-  router.push('/home')
-}
+  router.push("/home");
+};
 </script>
 
 <style scoped>
@@ -161,16 +204,58 @@ const goBack = () => {
   font-weight: 300;
 }
 
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.typing-animation {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.typing-animation span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #fcb514;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-animation span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-animation span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes typing {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .penguins-logo {
     height: 150px;
   }
-  
+
   .page-title {
     font-size: 2.5rem;
   }
-  
+
   .response-text {
     font-size: 1.25rem;
   }
@@ -180,29 +265,29 @@ const goBack = () => {
   .penguins-logo {
     height: 120px;
   }
-  
+
   .page-title {
     font-size: 2rem;
   }
-  
+
   .response-text {
     font-size: 1.1rem;
   }
-  
+
   .response-content {
     padding: 20px;
   }
-  
+
   .back-button {
     top: 20px;
     left: 20px;
     padding: 10px 16px;
     font-size: 0.9rem;
   }
-  
+
   .back-button svg {
     width: 16px;
     height: 16px;
   }
 }
-</style> 
+</style>
